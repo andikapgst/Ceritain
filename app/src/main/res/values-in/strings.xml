@@ -21,10 +21,11 @@
     <string name="have_an_account">Sudah punya akun?</string>
     <string name="login_here">Masuk disini</string>
     <string name="title_name">Nama lengkap</string>
+    <string name="empty_name_warning">Field tidak boleh kosong</string>
     <string name="name_placeholder">Masukkan nama lengkap kamu</string>
     <string name="title_signup">Daftar</string>
     <string name="signup_success">Selamat, kamu berhasil membuat akun</string>
-    <string name="signup_failed">Yah, kamu gagal membuat akun. Silahkan coba lagi ya.</string>
+    <string name="signup_failed">Yah, kamu gagal membuat akun. Silahkan coba lagi.</string>
 
     <!-- Upload Story Activity -->
     <string name="title_upload">Unggah cerita</string>
@@ -34,7 +35,8 @@
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
     <string name="post">Unggah</string>
-    <string name="empty_image_warning">Mohon pilih gambar dulu</string>
+    <string name="empty_image_warning">Mohon pilih gambar untuk diunggah</string>
+    <string name="empty_description_warning">Deskripsi tidak boleh kosong</string>
     <string name="upload_success">Berhasil mengunggah cerita</string>
     <string name="upload_failed">Gagal mengunggah cerita. Silahkan coba lagi</string>
 

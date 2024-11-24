@@ -20,6 +20,7 @@
     <string name="have_an_account">Already have an account?</string>
     <string name="login_here">Login here</string>
     <string name="title_name">Full name</string>
+    <string name="empty_name_warning">Field cannot be empty</string>
     <string name="name_placeholder">Enter your full name</string>
     <string name="title_signup">Register</string>
     <string name="signup_success">You have successfully created your account</string>
@@ -33,7 +34,8 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="post">Upload</string>
-    <string name="empty_image_warning">Please select an image first</string>
+    <string name="empty_image_warning">Please select an image to upload</string>
+    <string name="empty_description_warning">Description cannot be empty</string>
     <string name="upload_success">Story uploaded successfully</string>
     <string name="upload_failed">Failed to upload story. Please try again.</string>
 
