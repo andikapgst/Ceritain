@@ -58,7 +58,6 @@ class LoginViewModel(
                 val errorBody = Gson().fromJson(e.response()?.errorBody()?.string(), ErrorResponse::class.java)
                 val errorMessage = errorBody?.message ?: e.message()
                 _isError.value = errorMessage.toString()
-                Log.e("LoginViewModel", "Login failed: $errorMessage")
                 _isSuccess.value = false
                 _loginResult.value = Result.Error(errorMessage)
             } finally {

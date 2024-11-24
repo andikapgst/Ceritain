@@ -39,7 +39,6 @@ class MainViewModel(
             try {
                 val storyResponse = storyRepository.getStories()
                 _storyResult.value = Result.Success(storyResponse.listStory)
-                Log.d("MainViewModel", _storyResult.value.toString())
             } catch (e: Exception) {
                 _storyResult.value = Result.Error(e.message.toString())
             }
@@ -51,9 +50,9 @@ class MainViewModel(
             try {
                 val user = getUsername()
                 authRepository.logout()
-                Log.d("ProfileViewModel", "User $user successfully logged out")
+                Log.d("MainViewModel", "User $user successfully logged out")
             } catch (e: Exception) {
-                Log.e("ProfileViewModel", "Error logging out user: ${e.message}")
+                Log.e("MainViewModel", "Error logging out user: ${e.message}")
             }
         }
     }

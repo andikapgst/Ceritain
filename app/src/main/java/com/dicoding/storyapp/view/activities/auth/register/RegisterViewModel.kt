@@ -48,7 +48,6 @@ class RegisterViewModel(
                 val errorBody = Gson().fromJson(e.response()?.errorBody()?.string(), ErrorResponse::class.java)
                 val errorMessage = errorBody?.message ?: e.message()
                 _isError.value = errorMessage.toString()
-                Log.e("RegisterViewModel", "Registration failed: $errorMessage")
                 _registerResult.value = Result.Error(errorMessage)
             } finally {
                 _isLoading.value = false
