@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getString
 import com.dicoding.storyapp.R
 
 class Button : AppCompatButton {
