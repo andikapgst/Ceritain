@@ -17,12 +17,18 @@ import com.dicoding.storyapp.data.repository.Result
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
 import com.dicoding.storyapp.view.activities.ViewModelFactory
 import com.dicoding.storyapp.view.activities.auth.login.Login
+import com.dicoding.storyapp.view.customview.Button
+import com.dicoding.storyapp.view.customview.EmailEditText
+import com.dicoding.storyapp.view.customview.PasswordEditText
 
 class Register : AppCompatActivity() {
     private val viewModel by viewModels<RegisterViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var emailEditText: EmailEditText
+    private lateinit var passwordEditText: PasswordEditText
+    private lateinit var registerButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,11 @@ class Register : AppCompatActivity() {
             }
         }
 
+        emailEditText = binding.edRegisterEmail
+        passwordEditText = binding.edRegisterPassword
+        registerButton = binding.btnRegister
+
+        setMyButtonEnable()
         setupView()
         setupAction()
     }
@@ -57,20 +68,14 @@ class Register : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.edRegisterEmail.addTextChangedListener(object : TextWatcher {
+        binding.edRegisterName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
-                s: CharSequence,
+                s: CharSequence?,
                 start: Int,
                 count: Int,
                 after: Int
             ) {
-                if (!isValidEmail(s.toString())) {
-                    binding.ovEmail.error = getString(R.string.invalid_email)
-                    inactiveButton()
-                } else {
-                    binding.ovEmail.error = null
-                    activeButton()
-                }
+
             }
 
             override fun onTextChanged(
@@ -79,34 +84,56 @@ class Register : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                if (!isValidEmail(s.toString())) {
-                    binding.ovEmail.error = getString(R.string.invalid_email)
-                    inactiveButton()
+                if (s.toString().isEmpty()) {
+                    binding.edRegisterName.error = getString(R.string.empty_name_warning)
                 } else {
-                    binding.ovEmail.error = null
-                    activeButton()
+                    binding.edRegisterName.error = null
+                    setMyButtonEnable()
                 }
             }
 
-            override fun afterTextChanged(s: Editable) {
-                if (!isValidEmail(s.toString())) {
-                    binding.ovEmail.error = getString(R.string.invalid_email)
-                    inactiveButton()
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().isEmpty()) {
+                    binding.edRegisterName.error = getString(R.string.empty_name_warning)
                 } else {
-                    binding.ovEmail.error = null
-                    activeButton()
+                    binding.edRegisterName.error = null
+                    setMyButtonEnable()
                 }
             }
         })
 
-        binding.edRegisterPassword.addTextChangedListener(object : TextWatcher {
+        emailEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
                 start: Int,
                 count: Int,
                 after: Int
             ) {
-                inactiveButton()
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                setMyButtonEnable()
+            }
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+        })
+
+        passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
             }
 
             override fun onTextChanged(
@@ -115,31 +142,19 @@ class Register : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                if ((s.length < 8)) {
-                    binding.ovPassword.error = getString(R.string.invalid_password)
-                    inactiveButton()
-                } else {
-                    binding.ovPassword.error = null
-                    activeButton()
-                }
+                setMyButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
-                if ((s.length < 8)) {
-                    binding.ovPassword.error = getString(R.string.invalid_password)
-                    inactiveButton()
-                } else {
-                    binding.ovPassword.error = null
-                    activeButton()
-                }
+
             }
         })
 
-        binding.btnSignup.setOnClickListener {
+        registerButton.setOnClickListener {
             binding.progressIndicator.visibility = View.VISIBLE
             val name = binding.edRegisterName.text.toString()
-            val email = binding.edRegisterEmail.text.toString()
-            val password = binding.edRegisterPassword.text.toString()
+            val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
             viewModel.register(name, email, password)
 
             viewModel.registerResult.observe(this) { result ->
@@ -173,18 +188,15 @@ class Register : AppCompatActivity() {
         }
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+    private fun setMyButtonEnable() {
+        val name = binding.edRegisterName.text.toString()
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
 
-    private fun activeButton() {
-        val email = binding.edRegisterEmail.text.toString()
-        val password = binding.edRegisterPassword.text.toString()
-        binding.btnSignup.isEnabled =
-            email.isNotEmpty() && password.isNotEmpty() && isValidEmail(email) && password.length >= 8
-    }
+        val isNameValid = name.isNotEmpty()
+        val isEmailValid = Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+        val isPasswordValid = password.length >= 8 && password.isNotEmpty()
 
-    private fun inactiveButton() {
-        binding.btnSignup.isEnabled = false
+        registerButton.isEnabled = isNameValid && isEmailValid && isPasswordValid
     }
 }

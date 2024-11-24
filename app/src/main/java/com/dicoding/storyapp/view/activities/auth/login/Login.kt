@@ -18,6 +18,10 @@ import com.dicoding.storyapp.databinding.ActivityLoginBinding
 import com.dicoding.storyapp.view.activities.ViewModelFactory
 import com.dicoding.storyapp.view.activities.auth.register.Register
 import com.dicoding.storyapp.view.activities.main.MainActivity
+import com.dicoding.storyapp.view.customview.Button
+import com.dicoding.storyapp.view.customview.EmailEditText
+import com.dicoding.storyapp.view.customview.PasswordEditText
+import kotlin.text.isNotEmpty
 
 class Login : AppCompatActivity() {
 
@@ -25,6 +29,9 @@ class Login : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var emailEditText: EmailEditText
+    private lateinit var passwordEditText: PasswordEditText
+    private lateinit var loginButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +44,11 @@ class Login : AppCompatActivity() {
             }
         }
 
+        emailEditText = binding.edLoginEmail
+        passwordEditText = binding.edLoginPassword
+        loginButton = binding.btnLogin
+
+        setMyButtonEnable()
         setupView()
         setupAction()
     }
@@ -52,18 +64,17 @@ class Login : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-        inactiveButton()
     }
 
     private fun setupAction() {
-        binding.edLoginEmail.addTextChangedListener(object : TextWatcher {
+        emailEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
                 start: Int,
                 count: Int,
                 after: Int
             ) {
-                inactiveButton()
+
             }
 
             override fun onTextChanged(
@@ -72,34 +83,22 @@ class Login : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                if (!isValidEmail(s.toString())) {
-                    binding.ovEmail.error = getString(R.string.invalid_email)
-                    inactiveButton()
-                } else {
-                    binding.ovEmail.error = null
-                    activeButton()
-                }
+                setMyButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
-                if (!isValidEmail(s.toString())) {
-                    binding.ovEmail.error = getString(R.string.invalid_email)
-                    inactiveButton()
-                } else {
-                    binding.ovEmail.error = null
-                    activeButton()
-                }
+
             }
         })
 
-        binding.edLoginPassword.addTextChangedListener(object : TextWatcher {
+        passwordEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence,
                 start: Int,
                 count: Int,
                 after: Int
             ) {
-                inactiveButton()
+
             }
 
             override fun onTextChanged(
@@ -108,32 +107,20 @@ class Login : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                if ((s.length < 8)) {
-                    binding.ovPassword.error = getString(R.string.invalid_password)
-                    inactiveButton()
-                } else {
-                    binding.ovPassword.error = null
-                    activeButton()
-                }
+                setMyButtonEnable()
             }
 
             override fun afterTextChanged(s: Editable) {
-                if ((s.length < 8)) {
-                    binding.ovPassword.error = getString(R.string.invalid_password)
-                    inactiveButton()
-                } else {
-                    binding.ovPassword.error = null
-                    activeButton()
-                }
+
             }
         })
 
-        binding.btnLogin.setOnClickListener {
+        loginButton.setOnClickListener {
             viewModel.isLoading.observe(this) { isLoading ->
                 binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
-            val email = binding.edLoginEmail.text.toString()
-            val password = binding.edLoginPassword.text.toString()
+            val email = emailEditText.text.toString()
+            val password = passwordEditText.text.toString()
             viewModel.login(email, password)
 
             viewModel.loginResult.observe(this) { result ->
@@ -169,18 +156,13 @@ class Login : AppCompatActivity() {
         }
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
+    private fun setMyButtonEnable() {
+        val email = emailEditText.text.toString()
+        val password = passwordEditText.text.toString()
 
-    private fun activeButton() {
-        val email = binding.edLoginEmail.text.toString()
-        val password = binding.edLoginPassword.text.toString()
-        binding.btnLogin.isEnabled =
-            email.isNotEmpty() && password.isNotEmpty() && isValidEmail(email) && password.length >= 8
-    }
+        val isEmailValid = Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
+        val isPasswordValid = password.length >= 8 && password.isNotEmpty()
 
-    private fun inactiveButton() {
-        binding.btnLogin.isEnabled = false
+        loginButton.isEnabled = isEmailValid && isPasswordValid // Enable button if both are valid
     }
 }
