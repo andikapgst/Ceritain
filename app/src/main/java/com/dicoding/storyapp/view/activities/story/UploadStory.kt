@@ -112,10 +112,25 @@ class UploadStory : AppCompatActivity() {
         binding.progressIndicator.visibility = View.VISIBLE
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
 
+        if (currentImageUri == null) {
+            showToast(getString(R.string.empty_image_warning))
+            binding.progressIndicator.visibility = View.GONE
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            return
+        }
+
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, this).reduceFileImage()
             Log.d("Image File", "showImage: ${imageFile.path}")
+
             val description = binding.edAddDesc.text.toString()
+            if (description.isEmpty()) {
+                showToast(getString(R.string.empty_description_warning))
+                binding.progressIndicator.visibility = View.GONE
+                window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                return
+            }
+
             binding.progressIndicator.visibility = View.VISIBLE
 
             val requestBody = description.toRequestBody("text/plain".toMediaType())
