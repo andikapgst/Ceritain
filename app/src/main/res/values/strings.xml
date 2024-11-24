@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">Ceritain</string>
+
+    <!-- Login Activity -->
+    <string name="title_welcome">Login to your account</string>
+    <string name="not_have_an_account">Don\'t have an account yet?</string>
+    <string name="register_here">Register here</string>
+    <string name="title_email">Email</string>
+    <string name="email_placeholder">Enter your email</string>
+    <string name="title_password">Password</string>
+    <string name="password_placeholder">Enter your password</string>
+    <string name="title_login">Login</string>
+    <string name="invalid_email">Invalid email format</string>
+    <string name="invalid_password">Password must be at least 8 characters</string>
+    <string name="login_success">You have successfully logged in</string>
+    <string name="login_failed">Failed to login. Please check your username and password again.</string>
+
+    <!-- Register Activity -->
+    <string name="title_register">Create your account</string>
+    <string name="have_an_account">Already have an account?</string>
+    <string name="login_here">Login here</string>
+    <string name="title_name">Full name</string>
+    <string name="name_placeholder">Enter your full name</string>
+    <string name="title_signup">Register</string>
+    <string name="signup_success">You have successfully created your account</string>
+    <string name="signup_failed">Failed to create account. Please try again.</string>
+
+    <!-- Upload Story Activity -->
+    <string name="title_upload">Upload Story</string>
+    <string name="title_description">Description</string>
+    <string name="desc_placeholder">Tell us about your story and how it goes…</string>
+    <string name="preview">Image preview</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="post">Upload</string>
+    <string name="empty_image_warning">Please select an image first</string>
+    <string name="upload_success">Story uploaded successfully</string>
+    <string name="upload_failed">Failed to upload story. Please try again.</string>
+
+    <!-- Story Card -->
+    <string name="uploaded_by">Uploaded by</string>
+    <string name="created_at">Created at</string>
+
+    <!-- Main Activity -->
+    <string name="title_welcome_user">Welcome, %1$s</string>
+    <string name="language">Switch Language</string>
+    <string name="title_feed">Stories Feed</string>
+    <string name="empty_feed">No one has posted a story yet. Upload your story now!</string>
+    <string name="upload_story">Upload</string>
+
+    <!-- Profile Activity -->
+    <string name="logout">Log out</string>
+    <string name="logout_confirmation">Are you sure want to logout?</string>"
+    <string name="yes">Yes</string>
+    <string name="no">Cancel</string>
+    <string name="logout_success">You have successfully logged out</string>"
+
+    <!-- Welcome Activity -->
+    <string name="welcome">Welcome to Ceritain</string>
+    <string name="app_desc">A better way to share your story</string>
+
+    <!-- Widget Provider -->
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
+    <string name="appwidget_text">STORY BANNER</string>
+    <string name="empty_text">NO DATA</string>
+
+</resources>

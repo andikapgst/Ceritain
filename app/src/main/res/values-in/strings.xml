@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ceritain</string>
+
+    <!-- Login Activity -->
+    <string name="title_welcome">Login ke akunmu</string>
+    <string name="not_have_an_account">Belum punya akun?</string>
+    <string name="register_here">Daftar disini</string>
+    <string name="title_email">Email</string>
+    <string name="email_placeholder">Masukkan email kamu</string>
+    <string name="title_password">Kata sandi</string>
+    <string name="password_placeholder">Masukkan kata sandi kamu</string>
+    <string name="title_login">Masuk</string>
+    <string name="invalid_email">Format email tidak valid</string>
+    <string name="invalid_password">Kata sandi harus terdiri dari minimal 8 karakter</string>
+    <string name="login_success">Yeay, kamu berhasil login</string>
+    <string name="login_failed">Yah, kamu gagal login. Coba cek lagi username dan password kamu.</string>
+
+    <!-- Sign Up Activity -->
+    <string name="title_register">Buat akunmu</string>
+    <string name="have_an_account">Sudah punya akun?</string>
+    <string name="login_here">Masuk disini</string>
+    <string name="title_name">Nama lengkap</string>
+    <string name="name_placeholder">Masukkan nama lengkap kamu</string>
+    <string name="title_signup">Daftar</string>
+    <string name="signup_success">Selamat, kamu berhasil membuat akun</string>
+    <string name="signup_failed">Yah, kamu gagal membuat akun. Silahkan coba lagi ya.</string>
+
+    <!-- Upload Story Activity -->
+    <string name="title_upload">Unggah cerita</string>
+    <string name="title_description">Deskripsi</string>
+    <string name="desc_placeholder">Ceritakan pada kami tentang pengalamanmu</string>
+    <string name="preview">Tampilan gambar</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="post">Unggah</string>
+    <string name="empty_image_warning">Mohon pilih gambar dulu</string>
+    <string name="upload_success">Berhasil mengunggah cerita</string>
+    <string name="upload_failed">Gagal mengunggah cerita. Silahkan coba lagi</string>
+
+    <!-- Story Card -->
+    <string name="uploaded_by">Diunggah oleh</string>
+    <string name="created_at">Dibuat pada</string>
+
+    <!-- Main Activity -->
+    <string name="title_welcome_user">Selamat datang, %1$s</string>
+    <string name="language">Ganti Bahasa</string>
+    <string name="title_feed">Umpan Cerita</string>
+    <string name="empty_feed">Belum ada yang mengunggah cerita. Unggah ceritamu sekarang</string>
+    <string name="upload_story">Unggah</string>
+
+    <!-- Profile Activity -->
+    <string name="logout">Keluar</string>
+    <string name="logout_confirmation">Apa kamu yakin ingin logout?</string>"
+    <string name="yes">Ya</string>
+    <string name="no">Batal</string>
+    <string name="logout_success">Kamu berhasil logout</string>"
+
+    <!-- Welcome Activity -->
+    <string name="welcome">Selamat Datang di Ceritain</string>
+    <string name="app_desc">Jalan terbaik untuk menceritakan kisahmu</string>
+
+    <!-- Widget Provider -->
+    <string name="add_widget">Tambah widget</string>
+    <string name="app_widget_description">Ini adalah deskripsi widget aplikasi</string>
+    <string name="appwidget_text">BANNER CERITA</string>
+    <string name="empty_text">TIDAK ADA DATA</string>
+</resources>
