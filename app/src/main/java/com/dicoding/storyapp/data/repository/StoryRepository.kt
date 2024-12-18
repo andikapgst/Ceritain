@@ -8,19 +8,25 @@ import com.dicoding.storyapp.data.retrofit.ApiService
 import kotlinx.coroutines.flow.first
 
 class StoryRepository(
-    private val apiService: ApiService,
+    private var apiService: ApiService,
     private val pref: UserPreference
 ) {
     suspend fun getStoryDetail(id: String): StoryDetailResponse {
         val token = pref.getLoginState().first().token
-        val apiService = ApiConfig.getApiService(token)
+        apiService = ApiConfig.getApiService(token)
         return apiService.getDetailStory(id)
     }
 
     suspend fun getStories(): StoryResponse {
         val token = pref.getLoginState().first().token
-        val apiService = ApiConfig.getApiService(token)
+        apiService = ApiConfig.getApiService(token)
         return apiService.getStories()
+    }
+
+    suspend fun getStoriesWithLocation(): StoryResponse {
+        val token = pref.getLoginState().first().token
+        apiService = ApiConfig.getApiService(token)
+        return apiService.getStoriesWithLocation()
     }
 
     companion object {
