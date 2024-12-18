@@ -8,19 +8,17 @@
     android:paddingTop="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="16dp"
-    tools:context=".view.activities.auth.login.Login">
+    tools:context=".view.activities.auth.login.LoginActivity">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
+    <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:indeterminate="true"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_title_login"
@@ -66,10 +64,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:text="@string/title_email"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title_not_have_an_account" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title_not_have_an_account" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email"
@@ -143,5 +141,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_password"
         tools:ignore="SpeakableTextPresentCheck" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
