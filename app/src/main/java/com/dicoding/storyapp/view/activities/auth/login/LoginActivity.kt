@@ -23,7 +23,7 @@ import com.dicoding.storyapp.view.customview.EmailEditText
 import com.dicoding.storyapp.view.customview.PasswordEditText
 import kotlin.text.isNotEmpty
 
-class Login : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(this)
@@ -37,12 +37,6 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel.isSuccess.observe(this) { isSuccess ->
-            if (isSuccess) {
-                binding.progressIndicator.visibility = View.GONE
-            }
-        }
 
         emailEditText = binding.edLoginEmail
         passwordEditText = binding.edLoginPassword
@@ -73,9 +67,7 @@ class Login : AppCompatActivity() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence?,
@@ -86,9 +78,7 @@ class Login : AppCompatActivity() {
                 setMyButtonEnable()
             }
 
-            override fun afterTextChanged(s: Editable) {
-
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
 
         passwordEditText.addTextChangedListener(object : TextWatcher {
@@ -116,36 +106,34 @@ class Login : AppCompatActivity() {
         })
 
         loginButton.setOnClickListener {
-            viewModel.isLoading.observe(this) { isLoading ->
-                binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             viewModel.login(email, password)
+        }
 
-            viewModel.loginResult.observe(this) { result ->
-                binding.progressIndicator.visibility = View.VISIBLE
-                when (result) {
-                    is Result.Success -> {
-                        viewModel.getSession()
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(intent)
-                        finish()
-                        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
-                    }
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
 
-                    is Result.Error -> {
-                        binding.progressIndicator.visibility = View.GONE
-                        viewModel.isError.observe(this) { errorMessage ->
-                            if (errorMessage != null) {
-                                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
+        viewModel.loginResponse.observe(this) { message ->
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        }
 
-                    else -> Toast.makeText(this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show()
+        viewModel.loginResult.observe(this) { result ->
+            when (result) {
+                is Result.Success -> {
+                    viewModel.getSession()
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
                 }
+
+                is Result.Error -> {}
+
+                else -> Toast.makeText(this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show()
             }
         }
 

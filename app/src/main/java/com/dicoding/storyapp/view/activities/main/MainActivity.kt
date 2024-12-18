@@ -12,6 +12,7 @@ import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.repository.Result
 import com.dicoding.storyapp.databinding.ActivityMainBinding
 import com.dicoding.storyapp.view.activities.ViewModelFactory
+import com.dicoding.storyapp.view.activities.maps.MapsActivity
 import com.dicoding.storyapp.view.activities.story.UploadStory
 import com.dicoding.storyapp.view.activities.welcome.Welcome
 import com.dicoding.storyapp.view.adapter.StoryAdapter
@@ -36,6 +37,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.storyResponse.observe(this) { message ->
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         val swipeRefresh = binding.swipeRefresh
         swipeRefresh.setOnRefreshListener {
             fetchStories()
@@ -48,6 +59,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.topAppbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.maps -> {
+                    startActivity(Intent(this, MapsActivity::class.java))
+                    true
+                }
+
                 R.id.language -> {
                     startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                     true
@@ -97,20 +113,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.storyResult.observe(this) { result ->
             viewModel.getLoginToken()
             when (result) {
-                is Result.Loading -> {
-                    binding.progressIndicator.visibility = View.VISIBLE
-                }
+                is Result.Loading -> {}
 
                 is Result.Success -> {
-                    binding.progressIndicator.visibility = View.GONE
                     val stories = result.data
                     storyAdapter.submitList(stories)
                 }
 
-                is Result.Error -> {
-                    binding.progressIndicator.visibility = View.GONE
-                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-                }
+                is Result.Error -> {}
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.dicoding.storyapp.view.activities.auth.login
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,54 +13,51 @@ import com.dicoding.storyapp.data.response.LoginResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class LoginViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _isSuccess = MutableLiveData<Boolean>()
-    val isSuccess: LiveData<Boolean> = _isSuccess
-
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _isError = MutableLiveData<String?>()
-    val isError: LiveData<String?> = _isError
+    private val _loginResponse = MutableLiveData<String?>()
+    val loginResponse: LiveData<String?> = _loginResponse
 
     private val _loginResult = MutableLiveData<Result<LoginResponse>>()
     val loginResult: LiveData<Result<LoginResponse>> = _loginResult
 
     fun login(email: String, password: String) {
         _isLoading.value = true
-        _isError.value = null
+        _loginResponse.value = null
         viewModelScope.launch {
             try {
-                val loginResponse = authRepository.postLogin(email, password)
+                val response = authRepository.postLogin(email, password)
                 when {
-                    loginResponse.loginResult != null -> {
+                    response.loginResult != null -> {
                         saveSession(
                             UserModel(
-                                loginResponse.loginResult.name.toString(),
-                                loginResponse.loginResult.token.toString(),
+                                response.loginResult.name.toString(),
+                                response.loginResult.token.toString(),
                                 true
                             )
                         )
-                        _isSuccess.value = true
-                        _loginResult.value = Result.Success(loginResponse)
-                        _isError.value = null
-                    }
-                    loginResponse.message != null -> {
-                        throw Exception(loginResponse.message)
+                        _isLoading.value = false
+                        _loginResult.value = Result.Success(response)
+                        _loginResponse.value = response.message
                     }
                 }
             } catch (e: HttpException) {
                 val errorBody = Gson().fromJson(e.response()?.errorBody()?.string(), ErrorResponse::class.java)
                 val errorMessage = errorBody?.message ?: e.message()
-                _isError.value = errorMessage.toString()
-                _isSuccess.value = false
-                _loginResult.value = Result.Error(errorMessage)
-            } finally {
                 _isLoading.value = false
+                _loginResponse.value = errorMessage.toString()
+                _loginResult.value = Result.Error(errorMessage)
+            } catch (e: SocketTimeoutException) {
+                _isLoading.value = false
+                _loginResponse.value = e.message.toString()
+                _loginResult.value = Result.Error(e.message.toString())
             }
         }
     }
