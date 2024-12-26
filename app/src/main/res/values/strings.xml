@@ -29,6 +29,10 @@
     <!-- Upload Story Activity -->
     <string name="title_upload">Upload Story</string>
     <string name="title_description">Description</string>
+    <string name="permission_granted">Permission request granted</string>
+    <string name="permission_denied">Permission request denied</string>
+    <string name="add_location">Add Location</string>
+    <string name="location_not_found">Location not found</string>"
     <string name="desc_placeholder">Tell us about your story and how it goes…</string>
     <string name="preview">Image preview</string>
     <string name="camera">Camera</string>
@@ -45,10 +49,12 @@
 
     <!-- Main Activity -->
     <string name="title_welcome_user">Welcome, %1$s</string>
-    <string name="language">Switch Language</string>
+    <string name="maps">Maps</string>
+    <string name="language">Language</string>
     <string name="title_feed">Stories Feed</string>
     <string name="empty_feed">No one has posted a story yet. Upload your story now!</string>
     <string name="upload_story">Upload</string>
+    <string name="retry">Retry</string>
 
     <!-- Profile Activity -->
     <string name="logout">Log out</string>
@@ -66,5 +72,8 @@
     <string name="app_widget_description">This is an app widget description</string>
     <string name="appwidget_text">STORY BANNER</string>
     <string name="empty_text">NO DATA</string>
+
+    <!-- Maps Activity -->
+    <string name="title_activity_maps">MapsActivity</string>
 
 </resources>

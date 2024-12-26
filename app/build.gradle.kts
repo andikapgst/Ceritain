@@ -30,16 +30,23 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+
+    tasks.withType<Test> {
+        jvmArgs("-XX:+EnableDynamicAgentLoading")
     }
 }
 
@@ -85,6 +92,23 @@ dependencies {
     implementation("androidx.camera:camera-camera2:1.4.1")
     implementation("androidx.camera:camera-lifecycle:1.4.1")
     implementation("androidx.camera:camera-view:1.4.1")
+
+    // Paging
+    implementation("androidx.paging:paging-runtime-ktx:3.3.5")
+    implementation("androidx.room:room-paging:2.6.1")
+
+    // Location
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    // Testing
+    implementation("androidx.test.espresso:espresso-idling-resource:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.mockito:mockito-core:5.6.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 
     // Misc
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")

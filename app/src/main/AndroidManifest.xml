@@ -9,6 +9,8 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -34,7 +36,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="AIzaSyCJIOZs0GE_EAE7Lb3oP7HCK9w47OW9ikM" />
 
         <activity
             android:name=".view.activities.maps.MapsActivity"
@@ -61,13 +63,13 @@
             android:name=".view.activities.welcome.Welcome"
             android:exported="false" />
         <activity
-            android:name=".view.activities.story.UploadStory"
+            android:name=".view.activities.story.UploadStoryActivity"
             android:exported="false" />
         <activity
             android:name=".view.activities.detail.StoryDetail"
             android:exported="false" />
         <activity
-            android:name=".view.activities.auth.register.Register"
+            android:name=".view.activities.auth.register.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".view.activities.auth.login.LoginActivity"

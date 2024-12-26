@@ -12,7 +12,7 @@ import com.dicoding.storyapp.view.activities.ViewModelFactory
 
 class StoryDetail : AppCompatActivity() {
 
-    private val viewModel: StoryDetailViewModel by viewModels<StoryDetailViewModel> {
+    private val viewModel: StoryDetailViewModel by viewModels {
         ViewModelFactory.getInstance(application)
     }
     private lateinit var binding: ActivityStoryDetailBinding
@@ -21,6 +21,7 @@ class StoryDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         val id = intent.getStringExtra(EXTRA_ID)
         if (id != null) {

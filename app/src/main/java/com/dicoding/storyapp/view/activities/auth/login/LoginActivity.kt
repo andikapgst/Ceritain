@@ -12,11 +12,11 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.dicoding.storyapp.data.repository.Result
 import com.dicoding.storyapp.R
+import com.dicoding.storyapp.data.repository.Result
 import com.dicoding.storyapp.databinding.ActivityLoginBinding
 import com.dicoding.storyapp.view.activities.ViewModelFactory
-import com.dicoding.storyapp.view.activities.auth.register.Register
+import com.dicoding.storyapp.view.activities.auth.register.RegisterActivity
 import com.dicoding.storyapp.view.activities.main.MainActivity
 import com.dicoding.storyapp.view.customview.Button
 import com.dicoding.storyapp.view.customview.EmailEditText
@@ -25,7 +25,7 @@ import kotlin.text.isNotEmpty
 
 class LoginActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<LoginViewModel> {
+    val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityLoginBinding
@@ -41,6 +41,16 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = binding.edLoginEmail
         passwordEditText = binding.edLoginPassword
         loginButton = binding.btnLogin
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.loginResponse.observe(this) { message ->
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        }
 
         setMyButtonEnable()
         setupView()
@@ -87,9 +97,7 @@ class LoginActivity : AppCompatActivity() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence,
@@ -100,25 +108,13 @@ class LoginActivity : AppCompatActivity() {
                 setMyButtonEnable()
             }
 
-            override fun afterTextChanged(s: Editable) {
-
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             viewModel.login(email, password)
-        }
-
-        viewModel.isLoading.observe(this) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
-
-        viewModel.loginResponse.observe(this) { message ->
-            if (message != null) {
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            }
         }
 
         viewModel.loginResult.observe(this) { result ->
@@ -131,14 +127,21 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
 
-                is Result.Error -> {}
+                is Result.Error -> {
+                    Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                    emailEditText.text?.clear()
+                    passwordEditText.text?.clear()
+
+                    emailEditText.requestFocus()
+                    loginButton.isEnabled = false
+                }
 
                 else -> Toast.makeText(this, getString(R.string.login_failed), Toast.LENGTH_SHORT).show()
             }
         }
 
         binding.btnRegisterHere.setOnClickListener {
-            val intent = Intent(this, Register::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -151,6 +154,6 @@ class LoginActivity : AppCompatActivity() {
         val isEmailValid = Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotEmpty()
         val isPasswordValid = password.length >= 8 && password.isNotEmpty()
 
-        loginButton.isEnabled = isEmailValid && isPasswordValid // Enable button if both are valid
+        loginButton.isEnabled = isEmailValid && isPasswordValid
     }
 }

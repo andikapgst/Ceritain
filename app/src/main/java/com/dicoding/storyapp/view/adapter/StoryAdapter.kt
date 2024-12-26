@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.storyapp.data.response.ListStoryItem
+import com.dicoding.storyapp.data.local.database.StoryEntity
 import com.dicoding.storyapp.databinding.StoryCardBinding
 import com.dicoding.storyapp.view.activities.detail.StoryDetail
 
-class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
+class StoryAdapter:
+    PagingDataAdapter<StoryEntity, StoryAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,21 +27,19 @@ class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CAL
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val stories = getItem(position)
-        holder.bind(stories)
+        if (stories != null) {
+            holder.bind(stories)
+        }
     }
 
-    fun getStoryItemAt(position: Int): ListStoryItem {
-        return currentList[position]
-    }
-
-    override fun getItemCount(): Int {
-        return currentList.size
+    fun getStoryItemAt(position: Int): StoryEntity {
+        return getItem(position) as StoryEntity
     }
 
     class ViewHolder(val binding: StoryCardBinding) : RecyclerView.ViewHolder(
         binding.root
     ) {
-        fun bind(stories: ListStoryItem) {
+        fun bind(stories: StoryEntity) {
             Glide.with(binding.root.context)
                 .load(stories.photoUrl)
                 .into(binding.ivItemPhoto)
@@ -70,18 +69,18 @@ class StoryAdapter: ListAdapter<ListStoryItem, StoryAdapter.ViewHolder>(DIFF_CAL
     }
 
     companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<ListStoryItem> =
-            object : DiffUtil.ItemCallback<ListStoryItem>() {
+        val DIFF_CALLBACK: DiffUtil.ItemCallback<StoryEntity> =
+            object : DiffUtil.ItemCallback<StoryEntity>() {
                 override fun areItemsTheSame(
-                    oldItem: ListStoryItem,
-                    newItem: ListStoryItem
+                    oldItem: StoryEntity,
+                    newItem: StoryEntity
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
                 override fun areContentsTheSame(
-                    oldItem: ListStoryItem, newItem: ListStoryItem
+                    oldItem: StoryEntity, newItem: StoryEntity
                 ): Boolean {
-                    return oldItem.id == newItem.id
+                    return oldItem == newItem
                 }
             }
     }

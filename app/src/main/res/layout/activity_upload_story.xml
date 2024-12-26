@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    tools:context=".view.activities.story.UploadStory">
+    tools:context=".view.activities.story.UploadStoryActivity">
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressIndicator"
@@ -22,10 +22,11 @@
         android:id="@+id/img_preview"
         android:layout_width="0dp"
         android:layout_height="280dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/preview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressIndicator"
         app:srcCompat="@drawable/ic_place_holder" />
 
     <Button
@@ -88,17 +89,37 @@
             app:layout_constraintStart_toStartOf="parent" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_add_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/add_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/desc_layout" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_add_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:thumb="@drawable/thumb"
+        app:track="@drawable/track"
+        app:layout_constraintStart_toEndOf="@id/tv_add_location"
+        app:layout_constraintTop_toBottomOf="@id/desc_layout" />
+
     <Button
         android:id="@+id/post_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:text="@string/post"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/desc_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_location" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

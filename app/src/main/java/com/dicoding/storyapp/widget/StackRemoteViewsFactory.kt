@@ -25,7 +25,7 @@ internal class StackRemoteViewsFactory(
 
     override fun onCreate() {
         val viewModel = ViewModelProvider(context as MainActivity)[MainViewModel::class.java]
-        viewModel.getListStories()
+        // viewModel.getListStories()
         viewModel.storyResult.observe(context) { newStories ->
             stories = newStories
             onDataSetChanged()

@@ -6,43 +6,42 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.dicoding.storyapp.data.local.database.StoryEntity
 import com.dicoding.storyapp.data.pref.UserModel
 import com.dicoding.storyapp.data.repository.Result
-import com.dicoding.storyapp.data.repository.AuthRepository
 import com.dicoding.storyapp.data.repository.StoryRepository
-import com.dicoding.storyapp.data.response.ErrorResponse
 import com.dicoding.storyapp.data.response.ListStoryItem
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class MainViewModel(
-    private val authRepository: AuthRepository,
     private val storyRepository: StoryRepository
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _storyResponse = MutableLiveData<String?>()
-    val storyResponse: LiveData<String?> = _storyResponse
-
     private val _storyResult = MutableLiveData<Result<List<ListStoryItem>>>()
     val storyResult: LiveData<Result<List<ListStoryItem>>> = _storyResult
 
     fun getSession(): LiveData<UserModel> {
-        return authRepository.getLoginState().asLiveData()
+        return storyRepository.getLoginState().asLiveData()
     }
 
     fun getLoginToken(): LiveData<String> {
-        return authRepository.getToken().asLiveData()
+        return storyRepository.getToken().asLiveData()
     }
 
     fun getUsername(): LiveData<String> {
-        return authRepository.getUsername().asLiveData()
+        return storyRepository.getUsername().asLiveData()
     }
 
-    fun getListStories() {
+    fun getStories(): LiveData<PagingData<StoryEntity>> {
+        return storyRepository.getStories().cachedIn(viewModelScope)
+    }
+
+    /*fun getListStories() {
         _isLoading.value = true
         viewModelScope.launch {
             _storyResult.value = Result.Loading
@@ -50,23 +49,19 @@ class MainViewModel(
                 val storyResponse = storyRepository.getStories()
                 _isLoading.value = false
                 _storyResult.value = Result.Success(storyResponse.listStory)
-                _storyResponse.value = storyResponse.message
             } catch (e: HttpException) {
                 val errorBody = Gson().fromJson(e.response()?.errorBody()?.string(), ErrorResponse::class.java)
                 val errorMessage = errorBody?.message ?: e.message()
                 _isLoading.value = false
                 _storyResult.value = Result.Error(errorMessage)
-                _storyResponse.value = errorMessage
             }
         }
-    }
+    }*/
 
     fun logout() {
         viewModelScope.launch {
             try {
-                val user = getUsername()
-                authRepository.logout()
-                Log.d("MainViewModel", "User $user successfully logged out")
+                storyRepository.logout()
             } catch (e: Exception) {
                 Log.e("MainViewModel", "Error logging out user: ${e.message}")
             }

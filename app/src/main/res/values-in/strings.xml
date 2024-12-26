@@ -30,6 +30,7 @@
     <!-- Upload Story Activity -->
     <string name="title_upload">Unggah cerita</string>
     <string name="title_description">Deskripsi</string>
+    <string name="location_not_found">Lokasi tidak ditemukan</string>
     <string name="desc_placeholder">Ceritakan pada kami tentang pengalamanmu</string>
     <string name="preview">Tampilan gambar</string>
     <string name="camera">Kamera</string>
@@ -46,12 +47,14 @@
 
     <!-- Main Activity -->
     <string name="title_welcome_user">Selamat datang, %1$s</string>
+    <string name="maps">Peta</string>
     <string name="language">Ganti Bahasa</string>
     <string name="title_feed">Umpan Cerita</string>
     <string name="empty_feed">Belum ada yang mengunggah cerita. Unggah ceritamu sekarang</string>
     <string name="upload_story">Unggah</string>
 
     <!-- Profile Activity -->
+    <string name="retry">Coba lagi</string>
     <string name="logout">Keluar</string>
     <string name="logout_confirmation">Apa kamu yakin ingin logout?</string>"
     <string name="yes">Ya</string>
@@ -67,4 +70,8 @@
     <string name="app_widget_description">Ini adalah deskripsi widget aplikasi</string>
     <string name="appwidget_text">BANNER CERITA</string>
     <string name="empty_text">TIDAK ADA DATA</string>
+    <string name="permission_granted">Akses izin diberikan</string>
+    <string name="permission_denied">Akses izin ditolak</string>
+    <string name="add_location">Tambah lokasi</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

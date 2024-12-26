@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.storyapp.data.di.Injection
-import com.dicoding.storyapp.data.repository.AuthRepository
 import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.view.activities.auth.login.LoginViewModel
 import com.dicoding.storyapp.view.activities.auth.register.RegisterViewModel
@@ -14,27 +13,26 @@ import com.dicoding.storyapp.view.activities.maps.MapsViewModel
 import com.dicoding.storyapp.view.activities.story.UploadViewModel
 
 class ViewModelFactory(
-    private val authRepository: AuthRepository,
-    private val storyRepository: StoryRepository,
+    private val storyRepository: StoryRepository
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
-                MainViewModel(authRepository, storyRepository) as T
+                MainViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
                 StoryDetailViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(authRepository) as T
+                LoginViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
-                RegisterViewModel(authRepository) as T
+                RegisterViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(UploadViewModel::class.java) -> {
-                UploadViewModel(authRepository) as T
+                UploadViewModel(storyRepository) as T
             }
             modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
                 MapsViewModel(storyRepository) as T
@@ -51,7 +49,6 @@ class ViewModelFactory(
             if (INSTANCE == null) {
                 synchronized(ViewModelFactory::class.java) {
                     INSTANCE = ViewModelFactory(
-                        Injection.provideAuthRepository(context),
                         Injection.provideStoryRepository(context)
                     )
                 }

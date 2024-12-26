@@ -16,12 +16,12 @@ import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.repository.Result
 import com.dicoding.storyapp.databinding.ActivityRegisterBinding
 import com.dicoding.storyapp.view.activities.ViewModelFactory
-import com.dicoding.storyapp.view.activities.auth.login.Login
+import com.dicoding.storyapp.view.activities.auth.login.LoginActivity
 import com.dicoding.storyapp.view.customview.Button
 import com.dicoding.storyapp.view.customview.EmailEditText
 import com.dicoding.storyapp.view.customview.PasswordEditText
 
-class Register : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity() {
     private val viewModel by viewModels<RegisterViewModel> {
         ViewModelFactory.getInstance(this)
     }
@@ -39,9 +39,9 @@ class Register : AppCompatActivity() {
             binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        viewModel.isSuccess.observe(this) { isSuccess ->
-            if (isSuccess) {
-                binding.progressIndicator.visibility = View.GONE
+        viewModel.registerResponse.observe(this) { message ->
+            if (message != null) {
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -74,9 +74,7 @@ class Register : AppCompatActivity() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence?,
@@ -108,9 +106,7 @@ class Register : AppCompatActivity() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence?,
@@ -121,9 +117,7 @@ class Register : AppCompatActivity() {
                 setMyButtonEnable()
             }
 
-            override fun afterTextChanged(s: Editable) {
-
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
 
         passwordEditText.addTextChangedListener(object : TextWatcher {
@@ -132,9 +126,7 @@ class Register : AppCompatActivity() {
                 start: Int,
                 count: Int,
                 after: Int
-            ) {
-
-            }
+            ) {}
 
             override fun onTextChanged(
                 s: CharSequence,
@@ -145,35 +137,30 @@ class Register : AppCompatActivity() {
                 setMyButtonEnable()
             }
 
-            override fun afterTextChanged(s: Editable) {
-
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
 
         registerButton.setOnClickListener {
-            binding.progressIndicator.visibility = View.VISIBLE
             val name = binding.edRegisterName.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
             viewModel.register(name, email, password)
 
             viewModel.registerResult.observe(this) { result ->
-                binding.progressIndicator.visibility = View.VISIBLE
                 when (result) {
                     is Result.Success -> {
-                        Toast.makeText(this, getString(R.string.signup_success), Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, Login::class.java)
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                         finish()
                     }
 
                     is Result.Error -> {
-                        binding.progressIndicator.visibility = View.GONE
-                        viewModel.isError.observe(this) { errorMessage ->
-                            if (errorMessage != null) {
-                                Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                        Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                        emailEditText.text?.clear()
+                        passwordEditText.text?.clear()
+                        emailEditText.requestFocus()
+                        registerButton.isEnabled = false
                     }
 
                     else -> Toast.makeText(this, getString(R.string.signup_failed), Toast.LENGTH_SHORT).show()
@@ -182,7 +169,7 @@ class Register : AppCompatActivity() {
         }
 
         binding.btnLoginHere.setOnClickListener {
-            val intent = Intent(this, Login::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
